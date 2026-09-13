@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="SLOTHIES — Intelligent exam preparation and study optimization."
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0f19"
+    >
+
+    <title>SLOTHIES 🦥 — Study Smarter</title>
+
+    <style>
+        /* ================================
+           SLOTHIES — FIRST PROTOTYPE
+           STEP 1
+           ================================ */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: #080b12;
+            color: #f5f7fb;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ---------- NAVIGATION ---------- */
+
+        .navbar {
+            width: 100%;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8,11,18,0.88);
+            backdrop-filter: blur(18px);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            opacity: 0.65;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            font-size: 0.78rem;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: #cbd2df;
+        }
+
+        /* ---------- HERO ---------- */
+
+        .hero {
+            max-width: 1150px;
+            margin: auto;
+            padding: 100px 6% 70px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #cbd2df;
+            font-size: 0.82rem;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 8vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: -5px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            opacity: 0.65;
+        }
+
+        .hero-subtitle {
+            max-width: 650px;
+            margin: auto;
+            color: #aeb7c7;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+        }
+
+        /* ---------- MAIN CARD ---------- */
+
+        .setup-wrapper {
+            max-width: 900px;
+            margin: 0 auto 100px;
+            padding: 0 6%;
+        }
+
+        .setup-card {
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 28px;
+            padding: 34px;
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.35);
+        }
+
+        .card-heading {
+            margin-bottom: 30px;
+        }
+
+        .card-heading h2 {
+            font-size: 1.6rem;
+            margin-bottom: 7px;
+        }
+
+        .card-heading p {
+            color: #929cad;
+            font-size: 0.95rem;
+        }
+
+        /* ---------- FORM ---------- */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field label {
+            font-size: 0.84rem;
+            color: #b9c1cf;
+            font-weight: 600;
+        }
+
+        .field select,
+        .field input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 13px;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.055);
+            color: white;
+            outline: none;
+        }
+
+        .field select:focus,
+        .field input:focus {
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        .field select option {
+            background: #111621;
+            color: white;
+        }
+
+        /* ---------- BUTTON ---------- */
+
+        .primary-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 17px 20px;
+            border: none;
+            border-radius: 15px;
+            background: #f5f7fb;
+            color: #080b12;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .primary-button:active {
+            transform: translateY(0);
+        }
+
+        /* ---------- PROMISES ---------- */
+
+        .features {
+            max-width: 1000px;
+            margin: 0 auto 100px;
+            padding: 0 6%;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.025);
+        }
+
+        .feature-icon {
+            font-size: 1.7rem;
+            margin-bottom: 14px;
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            color: #8e98aa;
+            font-size: 0.88rem;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            padding: 30px 6%;
+            text-align: center;
+            color: #697386;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* ---------- MOBILE ---------- */
+
+        @media (max-width: 700px) {
+
+            .hero {
+                padding-top: 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -3px;
+            }
+
+            .setup-card {
+                padding: 22px;
+                border-radius: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-badge {
+                display: none;
+            }
+        }
+
+        /* ---------- ACCESSIBILITY ---------- */
+
+        :focus-visible {
+            outline: 3px solid white;
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================================
+         NAVIGATION
+         ================================ -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            SLOTHIES <span>🦥</span>
+        </div>
+
+        <div class="nav-badge">
+            Exam Intelligence
+        </div>
+
+    </header>
+
+
+    <!-- ================================
+         HERO
+         ================================ -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="eyebrow">
+                🦥 Study less randomly. Study more intelligently.
+            </div>
+
+            <h1>
+                SLOTHIES <span>🦥</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Your intelligent exam preparation system.
+                Discover what deserves your time, build smarter
+                study plans, and focus on the preparation that matters.
+            </p>
+
+        </section>
+
+
+        <!-- ================================
+             EXAM SETUP
+             ================================ -->
+
+        <section class="setup-wrapper">
+
+            <div class="setup-card">
+
+                <div class="card-heading">
+
+                    <h2>
+                        Build your exam profile
+                    </h2>
+
+                    <p>
+                        Tell SLOTHIES what you're preparing for.
+                    </p>
+
+                </div>
+
+
+                <form id="examForm">
+
+                    <div class="form-grid">
+
+                        <div class="field">
+
+                            <label for="board">
+                                Board
+                            </label>
+
+                            <select id="board" required>
+
+                                <option value="">
+                                    Select board
+                                </option>
+
+                                <option>
+                                    Karnataka
+                                </option>
+
+                                <option>
+                                    CBSE
+                                </option>
+
+                                <option>
+                                    ISC
+                                </option>
+
+                                <option>
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="class">
+                                Class
+                            </label>
+
+                            <select id="class" required>
+
+                                <option value="">
+                                    Select class
+                                </option>
+
+                                <option>
+                                    Class 10
+                                </option>
+
+                                <option>
+                                    Class 11
+                                </option>
+
+                                <option>
+                                    Class 12
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="subject">
+                                Subject
+                            </label>
+
+                            <select id="subject" required>
+
+                                <option value="">
+                                    Select subject
+                                </option>
+
+                                <option>
+                                    Physics
+                                </option>
+
+                                <option>
+                                    Chemistry
+                                </option>
+
+                                <option>
+                                    Mathematics
+                                </option>
+
+                                <option>
+                                    Biology
+                                </option>
+
+                                <option>
+                                    English
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="exam">
+                                Exam type
+                            </label>
+
+                            <select id="exam" required>
+
+                                <option value="">
+                                    Select exam
+                                </option>
+
+                                <option>
+                                    Board Exam
+                                </option>
+
+                                <option>
+                                    Pre-Board
+                                </option>
+
+                                <option>
+                                    School Exam
+                                </option>
+
+                                <option>
+                                    Unit Test
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="target">
+                                Target score (%)
+                            </label>
+
+                            <input
+                                id="target"
+                                type="number"
+                                min="1"
+                                max="100"
+                                placeholder="Example: 90"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="time">
+                                Available study time
+                            </label>
+
+                            <select id="time" required>
+
+                                <option value="">
+                                    Select time
+                                </option>
+
+                                <option>
+                                    15 minutes
+                                </option>
+
+                                <option>
+                                    30 minutes
+                                </option>
+
+                                <option>
+                                    1 hour
+                                </option>
+
+                                <option>
+                                    2 hours
+                                </option>
+
+                                <option>
+                                    4+ hours
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+                        ENTER SLOTH MODE →
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             CORE PROMISES
+             ================================ -->
+
+        <section class="features">
+
+            <div class="features-grid">
+
+                <article class="feature">
+
+                    <div class="feature-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Know what matters
+                    </h3>
+
+                    <p>
+                        Identify the topics and concepts
+                        that deserve your attention.
+                    </p>
+
+                </article>
+
+
+                <article class="feature">
+
+                    <div class="feature-icon">
+                        ⚡
+                    </div>
+
+                    <h3>
+                        Use your time better
+                    </h3>
+
+                    <p>
+                        Turn limited study time into
+                        focused preparation.
+                    </p>
+
+                </article>
+
+
+                <article class="feature">
+
+                    <div class="feature-icon">
+                        🧠
+                    </div>
+
+                    <h3>
+                        Learn from your mistakes
+                    </h3>
+
+                    <p>
+                        Build a personal understanding of
+                        your strengths and weaknesses.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         FOOTER
+         ================================ -->
+
+    <footer>
+
+        SLOTHIES 🦥 · Intelligent exam preparation
+
+    </footer>
+
+
+    <!-- ================================
+         TEMPORARY PROTOTYPE LOGIC
+         ================================ -->
+
+    <script>
+
+        const examForm =
+            document.getElementById("examForm");
+
+        examForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                const board =
+                    document.getElementById("board").value;
+
+                const studentClass =
+                    document.getElementById("class").value;
+
+                const subject =
+                    document.getElementById("subject").value;
+
+                const exam =
+                    document.getElementById("exam").value;
+
+                const target =
+                    document.getElementById("target").value;
+
+                const time =
+                    document.getElementById("time").value;
+
+
+                alert(
+                    "SLOTHIES profile created! 🦥\n\n" +
+
+                    "Board: " + board + "\n" +
+                    "Class: " + studentClass + "\n" +
+                    "Subject: " + subject + "\n" +
+                    "Exam: " + exam + "\n" +
+                    "Target: " + target + "%\n" +
+                    "Available time: " + time
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
